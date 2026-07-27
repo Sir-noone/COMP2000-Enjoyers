@@ -1,5 +1,3 @@
-# COMP2000-Enjoyers
-
 # Team name 
 COMP2000 Enjoyers
 
