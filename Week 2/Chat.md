@@ -6,7 +6,7 @@ Kevin: Y
 
 Billy: yep
 
-Ryan : yes
+Ryan : yes.
 
 Andrew: N
 
