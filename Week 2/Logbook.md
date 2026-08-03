@@ -1,3 +1,6 @@
+# Week 2
+This week learnt the various commands below and what they do, a diagram on the three trees workflow, and simulated a chat using the various built-in functions of github and vscode.
+
 # Git Commands
 git init / git clone: git init starts a new Git repository in a folder, while git clone copies an existing repository from a remote location to your computer.
 git add / git commit: git add stages changes so they are ready to be saved, and git commit records those staged changes in the repository’s history.
