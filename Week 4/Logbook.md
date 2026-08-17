@@ -1,4 +1,29 @@
 # Week 4 Planning
+human 
+	- movement (random) 
+	- health calculation
+		- rng value + age modifier
+	- infection calculation
+		- r0 value
+		- health
+	- mortality calculation
+		- health
+		- calculated lethality
+	- recovery
+		- range of time
+		- health
+
+possible interfaces?
+- transmission types for disease
+	- airborne: disease lingers while infected human moves
+	- direct contact: if person walks directly into another human
+	- survives on surfaces: humans interact with walls
+- age group
+	- child: respective immunity and lethality (modifier) 
+	- youth: respective immunity and lethality (modifier)
+	- middle-aged: respective immunity and lethality (modifier)
+	- old: respective: immunity and lethality (modifier)
+	- implementation --> randomInt --> decides category
 
 
 
