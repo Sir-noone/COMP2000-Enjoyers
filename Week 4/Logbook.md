@@ -24,6 +24,7 @@ possible interfaces?
 	- middle-aged: respective immunity and lethality (modifier)
 	- old: respective: immunity and lethality (modifier)
 	- implementation --> randomInt --> decides category
+    - inheritance: AgeGroup extends Human
 
 
 
