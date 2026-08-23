@@ -6,7 +6,7 @@ class Human {
     private double immunity;
     private boolean infected;
     private double health; // cannot go outside range 0.99-->0.5
-    private double mortality = 0.1;
+    private double mortality = 0.1; // placeholder for mortality rate
 
     //rng modifier to add randomness to health calculation
     Random rand = new Random();
