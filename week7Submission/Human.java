@@ -10,7 +10,7 @@ class Human {
 
     //rng modifier to add randomness to health calculation
     Random rand = new Random();
-    double rng = rand.nextDouble(0.4);
+    double rng = 0.3 + rand.nextDouble(0.2);
 
     int randomAge = rand.nextInt(4); // generates a random number between 0 and 3
 
@@ -31,7 +31,7 @@ class Human {
     }
 
     //public infect(); 
-    //public void recover(); 
+    //public void recover(); // dependent 
     //public void move(); // dependent on grid
     public double health(){
         this.health = Age() + rng;

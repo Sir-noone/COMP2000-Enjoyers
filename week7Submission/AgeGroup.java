@@ -1,9 +1,9 @@
 enum AgeGroup {
     
     CHILD(0.1),
-    YOUTH(-0.2),
-    ADULT(-0.3),
-    ELDERLY(0.1);
+    YOUTH(-0.1),
+    ADULT(-0.05),
+    ELDERLY(0.05);
 
     private final double ageValue;
 
