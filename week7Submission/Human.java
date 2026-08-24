@@ -1,6 +1,6 @@
 import java.util.Random;
 
-class Human {
+class Human implements Infectable{
     private AgeGroup age;
     //private double age = 0.1; // placeholder for age group, will be set by the simulation
     private double immunity;
@@ -26,22 +26,29 @@ class Human {
         }
     }
 
+    
     public double Age() {
         return this.age.getAgeValue();
     }
 
-    //public infect(); 
-    //public void recover(); // dependent 
+    //public void recover(); // dependent on disease
     //public void move(); // dependent on grid
+
     public double health(){
         this.health = Age() + rng;
         return this.health;
     }
 
+    @Override
     public void infect(){ 
         //if this cell has an uninfected neighbour --> range
         //then infect cell
 
+    }
+
+    @Override 
+    public boolean isInfected() {
+        return this.infected; //placeholder for infected status
     }
 
     public static void main(String[] args) {
