@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Implements direct-contact disease tranmission.
  * 
@@ -6,14 +8,17 @@
 
 public class DirectTransmission implements TransmissionStrategy {
 
-/**
- * Attempts to transmit a disease directly from the source human to the target human.
- * 
- * @param source the human who may transmit the disease
- * @param target the human who may recieve the disease
- * @param disease the disease being transmitted
- * @return true if tranmission occurs, false otherwise
- */
+    // Random number generator used when determining whether a transmission attempt is successful.
+    private final Random random = new Random();
+
+    /**
+     * Attempts to transmit a disease directly from the source human to the target human.
+     * 
+     * @param source the human who may transmit the disease
+     * @param target the human who may recieve the disease
+     * @param disease the disease being transmitted
+     * @return true if tranmission occurs, false otherwise
+     */
 
     @Override
     public boolean transmit(Infectable source, Infectable target, Disease disease) {
@@ -29,13 +34,23 @@ public class DirectTransmission implements TransmissionStrategy {
         }
 
         /**
+         * The Disease class now provides access to R0.
+         * 
+         * R0 is not itself a probability, so it should not simply be used directly as the chance of infection.
+         * 
+         * Our groups still needs to decide how R0 will be converted into simplified tranmission probability.
+         */
+        double r0 = disease.getR0();
+
+        /**
          * TODO:
-         * Use the Disease class once it is implemented to obtain the tranmission probability/R0 information.
+         * Apply our group's chosen formula to convert R0 into a probability of transmission.
          */
 
         /**
          * TODO:
          * Use the Human's immunity value when determining the final probability of transmission.
+         * This will be implemented once a getter for immunity is available.
          */
 
         /**
@@ -45,7 +60,15 @@ public class DirectTransmission implements TransmissionStrategy {
 
         /**
          * TODO:
-         * Use a random value to determine whether the tranmission attempt succeeds.
+         * Once the transmission probability has been established,
+         * generate a random value and determine whether the transmission succeeds.
+         */
+
+        /**
+         * Temporary return value.
+         * 
+         * Transmission cannot yet be fully calculated because,
+         * the probability model and proximity checks have not yet been implemented.
          */
         return false;
     }
