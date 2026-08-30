@@ -1,5 +1,5 @@
-public class Main {
-    public static void main(String[] args) {
+public class MainW5 {
+    public static void mainW5(String[] args) {
         Container<String> strings = new Container<>();
         strings.add("hello");
         strings.add("world");
