@@ -17,7 +17,12 @@ A team member may be excluded by vote, the team member is excluded if 4 other te
 Communication is encouraged between all members at all times, things like missing a class and groupwork should be communicated clearly ahead of time. Communication channels will be through Github and Discord
 
 # Work allocation
-Kevin, Ryan: Human Class
-Andrew: Grid
-Leo, Billy: Disease Class
-Ahmed: Transmission
+* Kevin, Ryan: Human Class
+* Andrew: Grid
+* Leo, Billy: Disease Class
+* Ahmed: Transmission
+
+# TODO List
+* Add patient Zero to start of array list of individuals and make array list
+* Add colour switch for infected display
+* Add infected boolean state

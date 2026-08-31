@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+//Add patient Zero to start of array list of individuals
+
 class Human extends Actor{
     private AgeGroup age;
     //private double age = 0.1; // placeholder for age group, will be set by the simulation
