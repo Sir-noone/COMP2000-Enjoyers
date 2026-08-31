@@ -82,4 +82,6 @@ public class Grid {
       g.fillRect(c.x+2, c.y+2, c.width-4, c.height-4);
     }
   }
+
+  //test
 }
