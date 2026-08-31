@@ -1,3 +1,4 @@
+package Visuals;
 import java.awt.Graphics;
 import java.util.Optional;
 

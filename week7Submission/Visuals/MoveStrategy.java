@@ -1,3 +1,4 @@
+package Visuals;
 import java.util.List;
 
 public interface MoveStrategy {

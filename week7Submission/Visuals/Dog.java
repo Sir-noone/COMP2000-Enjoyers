@@ -1,3 +1,4 @@
+package Visuals;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
