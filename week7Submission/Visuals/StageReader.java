@@ -61,7 +61,7 @@ public class StageReader {
         // hard-wiring these is definitely a code smell
         // we will see a better way of doing this later
         if(actor.equalsIgnoreCase("dog")) {
-          stage.addPlayer(new Dog(stage.grid.cellAtColRow(col, row).get(), isBot));
+          stage.addPlayer(new Human(stage.grid.cellAtColRow(col, row).get(), isBot));
         } else {
           throw new FormatException(" actor '" + actor + "' unknown.");
         }
@@ -71,7 +71,7 @@ public class StageReader {
       // if any error occurs, create a blank stage and add actors in default locations
       System.out.println("Error reading '" + path + "', creating default stage.");
       stage = new Stage();
-      stage.addPlayer(new Dog(stage.grid.cellAtColRow(0, 15).get(), true));
+      stage.addPlayer(new Human(stage.grid.cellAtColRow(0, 15).get(), true));
     }
     return stage;
   }

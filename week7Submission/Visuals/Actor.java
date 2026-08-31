@@ -7,18 +7,17 @@ import java.util.List;
 public abstract class Actor{
   Color baseColor, color;
   Cell loc;
-  List<Polygon> display;
+  public List<Polygon> display;
   boolean bot;
   int moves;
   int turns;
   MoveStrategy mover;
 
-  protected Actor(Cell inLoc, Color inColor, boolean isBot, int inMoves) {
+  protected Actor(Cell inLoc, Color inColor, boolean isBot) {
     loc = inLoc;
     baseColor = inColor;
     color = inColor;
     bot = isBot;
-    moves = inMoves;
     turns = 1;
     setPoly();
   }

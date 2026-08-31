@@ -1,4 +1,4 @@
-public class Disease {
+public class Disease{
     private double r0;
     int incubationPeriod;
     int recoveryPeriod;
