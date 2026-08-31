@@ -54,14 +54,15 @@ public class Stage {
 
     // state display
     g.setColor(Color.DARK_GRAY);
-    g.drawString(currentState.toString(), margin, yLoc);
+    g.drawString("COVID Simulation", margin + 100, yLoc);
     yLoc = yLoc + blockVT;
     Optional<Cell> underMouse = grid.cellAtPoint(mouseLoc);
     if(underMouse.isPresent()) {
       Cell hoverCell = underMouse.get();
       g.setColor(Color.DARK_GRAY);
+      g.drawString("Mouse Over:", margin, yLoc);
       String coord = String.valueOf(hoverCell.col) + String.valueOf(hoverCell.row);
-      g.drawString(coord, margin, yLoc);
+      g.drawString(coord, margin + 100, yLoc);
     }
 
     // agent display
@@ -72,15 +73,15 @@ public class Stage {
     for(int i = 0; i < listOfPlayers.size(); i++){
       Actor a = listOfPlayers.get(i);
       yLoc = yLoc + 2*blockVT;
-      g.drawString(a.getClass().getName(), margin, yLoc);
       g.drawString("location:", labelIndent, yLoc+vTab);
       g.drawString(Character.toString(a.loc.col) + Integer.toString(a.loc.row), valueIndent, yLoc+vTab);
-      g.drawString("player type:", labelIndent, yLoc+3*vTab);
-      g.drawString(a.isBot() ? "Bot" : "Human", valueIndent, yLoc+3*vTab);
-      if(a.isBot() && a.mover != null) {
-        g.drawString("mover:", labelIndent, yLoc+4*vTab);
-        g.drawString(a.mover.getClass().getName(), valueIndent, yLoc+4*vTab);
-      }
+      Human h = (Human) a;
+      g.drawString("Age Group:", labelIndent, yLoc+3*vTab);
+      g.drawString(h.getAgeGroup().toString(), valueIndent, yLoc+3*vTab);
+      g.drawString("Health:", labelIndent, yLoc+4*vTab);
+      g.drawString(String.format("%.2f", h.health()), valueIndent, yLoc+4*vTab);
+      //Add colour switch for infected display
+      //Add infected boolean state
     }    
   }
 

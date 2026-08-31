@@ -51,6 +51,11 @@ class Human extends Actor{
         return this.age.getAgeValue();
     }
 
+    //getAgeGroup method to return the age group of the human for Stage.java to display in the side panel
+    public AgeGroup getAgeGroup() {
+        return this.age;
+    }
+
     //public void recover(); // dependent on disease
     //public void move(); // dependent on grid
 
