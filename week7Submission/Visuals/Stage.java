@@ -15,7 +15,6 @@ public class Stage {
 
 
   GameState currentState;
-  Beat beat;
 
   public Stage() {
     grid = new Grid();
@@ -23,15 +22,11 @@ public class Stage {
     cellOverlay = new ArrayList<Cell>();
     playerInAction = Optional.empty();
     currentState = new ChoosingActor();
-    beat = new AnimationBeat();
     
   }
 
   public void addPlayer(Actor player) {
     listOfPlayers.add(player);
-    if(player.isBot()) {
-      beat.punchIn(player);
-    }
   }
 
   public void paint(Graphics g, Point mouseLoc) {
@@ -41,7 +36,6 @@ public class Stage {
     // Blue cell selection overlay with 50% transparency
     grid.paintOverlay(g, cellOverlay, new Color(0f, 0f, 1f, 0.5f));
 
-    beat.ticktock();
     for(Actor player: listOfPlayers) {
       player.paint(g);
     }

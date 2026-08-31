@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.List;
 
-public abstract class Actor implements Pulse {
+public abstract class Actor{
   Color baseColor, color;
   Cell loc;
   List<Polygon> display;
