@@ -1,5 +1,5 @@
 package Visuals;
-enum AgeGroup {
+public enum AgeGroup {
     
     CHILD(0.1),
     YOUTH(-0.1),
