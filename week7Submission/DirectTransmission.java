@@ -1,4 +1,5 @@
 import Visuals.*;
+
 import java.util.Random;
 
 /**
@@ -15,8 +16,7 @@ import java.util.Random;
  */
 public class DirectTransmission implements TransmissionStrategy {
 
-    // Number of cells away that is considered close enough
-    // for direct transmission.
+    // Number of cells away that is considered close enough for direct transmission.
     private static final int CONTACT_RADIUS = 1;
 
     /*
@@ -24,8 +24,7 @@ public class DirectTransmission implements TransmissionStrategy {
      * an approximate probability for one contact.
      *
      * Example:
-     * R0 = 3.0
-     * 3.0 / 10.0 = 0.30
+     * R0 = 3.0, 3.0 / 10.0 = 0.30
      *
      * This is a modelling assumption for our simulation rather
      * than a real epidemiological formula.
@@ -36,8 +35,7 @@ public class DirectTransmission implements TransmissionStrategy {
     // an attempted transmission succeeds.
     private final Random random = new Random();
 
-    // The Grid used to determine whether two cells are
-    // close enough for direct contact.
+    // The Grid used to determine whether two cells are close enough for direct contact.
     private final Grid grid;
 
     /**
@@ -46,12 +44,14 @@ public class DirectTransmission implements TransmissionStrategy {
      * @param grid the grid containing the humans
      */
     public DirectTransmission(Grid grid) {
+        if (grid == null) {
+            throw new IllegalArgumentException("Grid cannot be null.");
+        }
         this.grid = grid;
     }
 
     /**
-     * Attempts to transmit a disease directly from the source
-     * to the target.
+     * Attempts to transmit a disease directly from the source to the target.
      *
      * @param source  the entity that may transmit the disease
      * @param target  the entity that may become infected
@@ -61,20 +61,14 @@ public class DirectTransmission implements TransmissionStrategy {
     @Override
     public boolean transmit(Infectable source, Infectable target, Disease disease) {
 
-        // The source must already be infected.
-        if (!source.isInfected()) {
-            return false;
-        }
-
-        // Do not transmit to a target that is already infected.
-        if (target.isInfected()) {
+        // The source must already be infected & target must not already be infected for transmission to occur.
+        if (!source.isInfected() || target.isInfected()) {
             return false;
         }
 
         /*
          * TODO:
          * Obtain the Cell occupied by the source and target.
-         *
          * Human currently inherits a 'loc' field from Actor,
          * but Infectable does not expose that location.
          */
