@@ -1,5 +1,3 @@
-import Visuals.*;
-
 /**
  * Defines the general behaviour for a disease tranmission strategy.
  * 
