@@ -1,5 +1,3 @@
-import Visuals.*;
-
 import java.util.Random;
 
 /**
@@ -35,21 +33,6 @@ public class DirectTransmission implements TransmissionStrategy {
     // an attempted transmission succeeds.
     private final Random random = new Random();
 
-    // The Grid used to determine whether two cells are close enough for direct contact.
-    private final Grid grid;
-
-    /**
-     * Creates a DirectTransmission strategy using the specified grid.
-     *
-     * @param grid the grid containing the humans
-     */
-    public DirectTransmission(Grid grid) {
-        if (grid == null) {
-            throw new IllegalArgumentException("Grid cannot be null.");
-        }
-        this.grid = grid;
-    }
-
     /**
      * Attempts to transmit a disease directly from the source to the target.
      *
@@ -61,27 +44,30 @@ public class DirectTransmission implements TransmissionStrategy {
     @Override
     public boolean transmit(Infectable source, Infectable target, Disease disease) {
 
+        /**
+         * Check for invalid arguments before attempting transmission.
+         * 
+         * This prevents a NullPointerException if any of the parameters are null.
+         */
+        if (source == null || target == null || disease == null) {
+            throw new IllegalArgumentException("Source, target, and disease cannot be null.");
+        }
+
         // The source must already be infected & target must not already be infected for transmission to occur.
         if (!source.isInfected() || target.isInfected()) {
             return false;
         }
 
-        /*
+        /**
          * TODO:
-         * Obtain the Cell occupied by the source and target.
-         * Human currently inherits a 'loc' field from Actor,
-         * but Infectable does not expose that location.
+         * Once the Human/Grid relationship is available,
+         * check whether the source and target are within the CONTACT_RADIUS.
+         * 
+         * The Grid class already provides getRadius(), but Human/Cell
+         * location information is not currently exposed through the necessary classes and interfaces.
          */
 
-        /*
-         * TODO:
-         * Once the Human/Cell relationship is available,
-         * use grid.getRadius(...) to check whether the source
-         * and target are close enough for direct contact.
-         */
-
-        // Convert the disease's R0 into a simplified
-        // per-contact transmission probability.
+        // Calculate the simplified probability of transmission.
         double probability = calculateTransmissionProbability(disease);
 
         /*
@@ -92,7 +78,13 @@ public class DirectTransmission implements TransmissionStrategy {
          */
         if (random.nextDouble() < probability) {
 
-            // Tell the target that it has been infected.
+            /**
+             * Use the Infectable interface rather than directly
+             * modifying the target's fields.
+             * 
+             * This demonstrates encapsulation because the target
+             * controls how its infected state is changed.
+             */
             target.infect();
 
             return true;
