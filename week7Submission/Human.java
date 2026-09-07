@@ -98,10 +98,6 @@ public class Human extends Actor{
         return this.infected; //placeholder for infected status
     }
 
-    public static void main(String[] args) {
-        Random rand = new Random();
-    }
-
 
 }
 

@@ -27,7 +27,7 @@ public abstract class Actor{
   protected abstract void setPoly();
 
 
-  public void setLocation(Cell inLoc) {
+  /*public void setLocation(Cell inLoc) {
     loc = inLoc;
     if(loc.y % 2 == 0) {
       
@@ -35,6 +35,6 @@ public abstract class Actor{
       
     }
     setPoly();
-  }
+  } */
 
 }
