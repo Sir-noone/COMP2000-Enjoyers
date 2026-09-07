@@ -1,5 +1,4 @@
-# Learning Java (3rd Edition) - Chapter 5 Summary
-## Classes, Methods, and Object Creation
+# Week 3 Logbook
 
 ## Classes and Objects
 

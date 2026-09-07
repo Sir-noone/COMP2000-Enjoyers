@@ -1,4 +1,11 @@
-# Week 6 Logbook code
+# Week 6 Logbook
+
+## Exceptions
+
+An exception is an event that occurs while a program is running and interrupts its normal flow, usually because an error or unexpected situation has occurred. In Java, exceptions can be handled with `try`, `catch`, and `finally` blocks: `try` contains code that may fail, `catch` responds to the exception, and `finally` runs cleanup code whether or not an exception occurs. Exceptions can also be thrown using `throw` and declared using `throws`.
+
+
+
 ## BarcodePuzzle.java 
 
 public class BarcodePuzzle {
