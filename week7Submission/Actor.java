@@ -1,24 +1,17 @@
-package Visuals;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.List;
 
 public abstract class Actor{
-  Color baseColor, color;
+  Color color;
   Cell loc;
   public List<Polygon> display;
-  boolean bot;
-  int moves;
-  int turns;
-  MoveStrategy mover;
 
-  protected Actor(Cell inLoc, Color inColor, boolean isBot) {
+  protected Actor(Cell inLoc, Color inColor) {
     loc = inLoc;
-    baseColor = inColor;
     color = inColor;
-    bot = isBot;
-    turns = 1;
     setPoly();
   }
 
@@ -33,16 +26,13 @@ public abstract class Actor{
 
   protected abstract void setPoly();
 
-  public boolean isBot() {
-    return bot;
-  }
 
   public void setLocation(Cell inLoc) {
     loc = inLoc;
-    if(loc.row % 2 == 0) {
-      mover = new MoveRandomly();
+    if(loc.y % 2 == 0) {
+      
     } else {
-      mover = new MoveLeft();
+      
     }
     setPoly();
   }

@@ -1,4 +1,4 @@
-package Visuals;
+
 public enum AgeGroup {
     
     CHILD(0.1),
