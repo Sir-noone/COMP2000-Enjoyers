@@ -83,7 +83,7 @@ public class DirectTransmission implements TransmissionStrategy {
          * If the random value is lower than the calculated
          * probability, transmission succeeds.
          */
-        if (random.nextDouble() < probability) {
+        //if (random.nextDouble() < probability) {
 
             /*
              * Use Human's infect() method rather than directly
@@ -92,10 +92,10 @@ public class DirectTransmission implements TransmissionStrategy {
              * This keeps responsibility for the Human's state
              * inside the Human class.
              */
-            target.infect();
+            //target.infect();
 
-            return true;
-        }
+           // return true;
+        //}
 
         // A valid contact is infected immediately
         target.infect();

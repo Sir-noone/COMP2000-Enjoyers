@@ -13,7 +13,7 @@ public class Disease{
         this.mortalityRate = mortalityRate;
         this.transmissionStrategy = transmissionStrategy;
     } 
-    public boolean infect(Infectable source, Infectable target) { 
+    public boolean infect(Human source, Human target) { 
         return transmissionStrategy.transmit(source, target, this);
     } 
     // the transmittionStrategy checks wether the disease is successfully transmitted, 
