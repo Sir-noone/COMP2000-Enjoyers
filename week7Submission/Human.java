@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.List;
 
 //Add patient Zero to start of array list of individuals
 
@@ -19,8 +20,9 @@ public class Human extends Actor{
     Random rand = new Random();
     double rng = 0.3 + rand.nextDouble(0.2);
 
-    int randomAge = rand.nextInt(4);
-    int randomNum = rand.nextInt(2); // generates a random number between 0 and 1
+    int randomAge = rand.nextInt(4); // generates a random number between 0 and 3 to detemine AgeGroup
+    int randomNum = rand.nextInt(2); // generates a random number between 0 and 1 to determine randomly whether humann
+                                           // is infected or not at the start of the simulation
 
     public Human(Cell inLoc, boolean isBot) {
 
@@ -77,8 +79,71 @@ public class Human extends Actor{
         return false;
     }
 
-    //public void recover(); // dependent on disease
-    //public void move(); // dependent on grid
+    public void move(Grid grid, List<Human> humans) {
+        int currentRow = -1;
+        int currentCol = -1;
+
+        // Find the row and column of this humans current cell in the grid
+        for (int row = 0; row < grid.rows; row++) {
+            for (int col = 0; col < grid.cols; col++) {
+                if (grid.cells[row][col] == loc) {
+                    currentRow = row;
+                    currentCol = col;
+                    break;
+                }
+            }
+            if (currentRow != -1) {
+                break;
+            }
+        }
+
+        if (currentRow == -1) {
+            return;
+        }
+
+        // Collect each valid neighboring cell that is not occupied by another human
+        List<Cell> possibleCells = new ArrayList<>();
+        for (int row = currentRow - 1; row <= currentRow + 1; row++) {
+            for (int col = currentCol - 1; col <= currentCol + 1; col++) {
+                if (row < 0 || row >= grid.rows || col < 0 || col >= grid.cols) {
+                    continue;
+                }
+                if (row == currentRow && col == currentCol) {
+                    continue;
+                }
+
+                Cell candidate = grid.cells[row][col];
+                boolean occupied = false;
+                for (Human human : humans) {
+                    if (human != this && human.loc == candidate) {
+                        occupied = true;
+                        break;
+                    }
+                }
+
+                if (!occupied) {
+                    possibleCells.add(candidate);
+                }
+            }
+        }
+
+        // Choose one of the available cells at random, if any exist
+        if (!possibleCells.isEmpty()) {
+            setLocation(possibleCells.get(rand.nextInt(possibleCells.size())));
+        }
+    }
+
+    public void infectNearby(List<Human> humans, Disease disease) {
+        if (!infected) {
+            return;
+        }
+
+        for (Human human : humans) {
+            if (human != this && !human.isInfected()) {
+                disease.infect(this, human);
+            }
+        }
+    }
 
     public double health(){
         this.health = Age() + rng;
@@ -89,9 +154,9 @@ public class Human extends Actor{
         if (this.infected){
             return;
         }
-        
-        //if this cell has an uninfected neighbour --> range
-        //then infect cell
+
+        this.infected = true;
+        this.color = Color.RED;
     }
 
     public boolean isInfected() {

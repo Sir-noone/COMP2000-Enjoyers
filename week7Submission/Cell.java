@@ -8,7 +8,7 @@ public class Cell extends Rectangle {
     //fields
     int x;
     int y;
-    static int size = 30;
+    static int size = 20;
 
     //constructor
     public Cell(int inX, int inY) {

@@ -1,34 +1,27 @@
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.*;
 
 public class Main extends JFrame {
-    private final JLabel details = new JLabel("Hover over a human to see details");
+    private final JLabel population = new JLabel();
 
     public static void main(String[] args) {
-        Main frame = new Main();
-        frame.run();
+        SwingUtilities.invokeLater(Main::new);
     }
 
     class Canvas extends JPanel {
         Grid grid = new Grid();
         List<Human> humans = new ArrayList<>();
+        int infected = 0;
+        int healthy = 0;
 
         public Canvas() {
             setPreferredSize(new Dimension(
                     grid.cols * Cell.size + 10,
                     grid.rows * Cell.size + 10));
 
-            addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseMoved(MouseEvent event) {
-                    showHumanDetails(event.getPoint());
-                }
-            });
 
             List<Cell> availableCells = new ArrayList<>();
             for (int row = 0; row < grid.rows; row++) {
@@ -38,27 +31,45 @@ public class Main extends JFrame {
             }
 
             Collections.shuffle(availableCells);
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 100; i++) {
                 humans.add(new Human(availableCells.get(i), false));
             }
+
+            updatePopulationCounts();
+            Disease disease = new Disease(3.0, 5, 14, 0.1, new DirectTransmission());
+            Timer timer = new Timer(1000, event -> {
+                for (Human human : humans) {
+                    human.move(grid, humans);
+                }
+                for (Human human : humans) {
+                    human.infectNearby(humans, disease);
+                }
+                updatePopulationCounts();
+                repaint();
+            });
+            timer.start();
         }
 
-        private void showHumanDetails(Point mousePosition) {
+        private void updatePopulationCounts() {
+            infected = 0;
+            healthy = 0;
+
             for (Human human : humans) {
-                if (human.contains(mousePosition)) {
-                    details.setText("<html>Age: " + human.getAgeGroup()
-                            + "<br>Infected: " + human.isInfected()
-                            + "<br>Health: " + String.format("%.2f", human.health())
-                            + "</html>");
-                    return;
+                if (human.isInfected()) {
+                    infected++;
+                } else {
+                    healthy++;
                 }
             }
-            details.setText("Hover over a human to see details");
+
+            population.setText("<html>Infected: " + infected
+                    + "<br>Not infected: " + healthy + "</html>");
         }
+
 
         @Override
         public void paint(Graphics g) {
-            
+            super.paint(g);
             grid.paint(g, getMousePosition());
             for (Human human : humans) {
                 human.paint(g);
@@ -69,18 +80,14 @@ public class Main extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLayout(new BorderLayout());
             Canvas canvas = new Canvas();
-            details.setPreferredSize(new Dimension(180, 100));
-            details.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            population.setPreferredSize(new Dimension(180, 100));
+            population.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             this.add(canvas, BorderLayout.CENTER);
-            this.add(details, BorderLayout.EAST);
+            JPanel sidePanel = new JPanel(new BorderLayout());
+            sidePanel.add(population, BorderLayout.NORTH);
+            this.add(sidePanel, BorderLayout.EAST);
             this.pack();
             this.setVisible(true);
         }  
 
-        public void run() {
-            while (true) {
-                repaint();
-            }
-        }
-    
 }

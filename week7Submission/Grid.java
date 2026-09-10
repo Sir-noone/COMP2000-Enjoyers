@@ -3,8 +3,8 @@ import java.awt.Point;
 
 public class Grid {
     //fields
-    int rows = 20;
-    int cols = 20;
+    int rows = 40;
+    int cols = 40;
     Cell[][] cells = new Cell[rows][cols];
 
     //constructor
