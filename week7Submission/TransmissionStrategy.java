@@ -1,7 +1,7 @@
 /**
  * Defines the general behaviour for a disease tranmission strategy.
  * 
- * Different tranmission types can implement this interface using their own rules
+ * Different tranmission types can implement this interface using different rules
  * for determining whether a disease is successfully tranmitted from one human to another.
  */
 public interface TransmissionStrategy {

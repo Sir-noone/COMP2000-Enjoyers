@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Implements direct-contact disease transmission.
  *
@@ -5,14 +7,14 @@
  * 1. The source must already be infected.
  * 2. The target must not already be infected.
  * 3. The source and target must be within the contact radius.
- * 4. The target becomes infected.
+ * 4. The transmission probability check must succeed.
  *
  * This class implements TransmissionStrategy, allowing the Disease
  * class to use different transmission methods polymorphically.
  */
 public class DirectTransmission implements TransmissionStrategy {
 
-    // Number of cells away that is considered close enough
+    // Number of grid cells away that is considered close enough
     // for direct transmission.
     private static final int CONTACT_RADIUS = 1;
 
@@ -31,7 +33,7 @@ public class DirectTransmission implements TransmissionStrategy {
 
     // Random number generator used to determine whether
     // the transmission attempt succeeds.
-    //private final Random random = new Random();
+    private final Random random = new Random();
 
     /**
      * Attempts to transmit a disease directly from the source
@@ -45,9 +47,7 @@ public class DirectTransmission implements TransmissionStrategy {
     @Override
     public boolean transmit(Human source, Human target, Disease disease) {
 
-         // Check for invalid arguments before attempting transmission.
-         // This prevents a NullPointerException if any of the parameters are null.
-         
+        // Prevent invalid objects from being processed.
         if (source == null || target == null || disease == null) {
             throw new IllegalArgumentException(
                     "Source, target, and disease cannot be null."
@@ -59,61 +59,48 @@ public class DirectTransmission implements TransmissionStrategy {
             return false;
         }
 
-        if (source instanceof Human sourceHuman && target instanceof Human targetHuman
-                && !withinContactRadius(sourceHuman, targetHuman)) {
-            return false;
-        }
-        // The target should not already be infected.
+        // The target must not already be infected.
         if (target.isInfected()) {
             return false;
         }
 
-        // The source and target must be close enough
-        // for direct contact to occur.
+        // The two humans must be close enough for direct contact.
         if (!withinContactRange(source, target)) {
             return false;
         }
 
-        // Calculate the simplified probability of transmission.
+        // Calculate the simplified transmission probability.
         double probability = calculateTransmissionProbability(disease);
 
         /*
          * Generate a random value between 0.0 and 1.0.
          *
-         * If the random value is lower than the calculated
-         * probability, transmission succeeds.
+         * If the random value is below the calculated probability,
+         * transmission succeeds.
          */
-        //if (random.nextDouble() < probability) {
+        if (random.nextDouble() < probability) {
 
             /*
-             * Use Human's infect() method rather than directly
-             * modifying its infection state.
+             * Use the Human's infect() method instead of directly
+             * changing the infected field.
              *
-             * This keeps responsibility for the Human's state
-             * inside the Human class.
+             * This preserves encapsulation by allowing Human
+             * to control its own infection state.
              */
-            //target.infect();
+            target.infect();
 
-           // return true;
-        //}
+            return true;
+        }
 
-        // A valid contact is infected immediately
-        target.infect();
-        return true;
+        return false;
     }
 
-    private boolean withinContactRadius(Human source, Human target) {
-        int columnDistance = Math.abs(source.loc.x - target.loc.x) / Cell.size;
-        int rowDistance = Math.abs(source.loc.y - target.loc.y) / Cell.size;
-        return Math.max(columnDistance, rowDistance) <= CONTACT_RADIUS;
-
-    }
     /**
      * Determines whether two humans are close enough for
      * direct transmission.
      *
-     * The Human class inherits its Cell location from Actor.
-     * The current Cell class stores its position using x and y.
+     * Human inherits its Cell location from Actor.
+     * Cell stores its grid position using x and y coordinates.
      *
      * @param source the source human
      * @param target the target human
@@ -121,7 +108,7 @@ public class DirectTransmission implements TransmissionStrategy {
      */
     private boolean withinContactRange(Human source, Human target) {
 
-        // Obtain the Cell occupied by each Human.
+        // Obtain the Cells occupied by each Human.
         Cell sourceCell = source.loc;
         Cell targetCell = target.loc;
 
@@ -132,19 +119,23 @@ public class DirectTransmission implements TransmissionStrategy {
         }
 
         /*
-         * Convert the pixel positions of the cells into
-         * grid distances.
+         * Convert the pixel distance between the Cells into
+         * a distance measured in grid cells.
          *
-         * Cell.size represents the size of each grid cell.
+         * Cell.size is currently 20.
          */
-        int xDistance = Math.abs(sourceCell.x - targetCell.x) / Cell.size;
-        int yDistance = Math.abs(sourceCell.y - targetCell.y) / Cell.size;
+        int columnDistance =
+                Math.abs(sourceCell.x - targetCell.x) / Cell.size;
+
+        int rowDistance =
+                Math.abs(sourceCell.y - targetCell.y) / Cell.size;
 
         /*
-         * Use distance to determine whether the
-         * two Humans are within the direct-contact radius.
+         * Use Manhattan distance:
+         *
+         * distance = horizontal distance + vertical distance
          */
-        int distance = xDistance + yDistance;
+        int distance = columnDistance + rowDistance;
 
         return distance <= CONTACT_RADIUS;
     }
@@ -168,5 +159,4 @@ public class DirectTransmission implements TransmissionStrategy {
         // Ensure the probability remains between 0.0 and 1.0.
         return Math.max(0.0, Math.min(1.0, baseProbability));
     }
-
 }
