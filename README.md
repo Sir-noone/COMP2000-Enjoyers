@@ -23,6 +23,10 @@ Communication is encouraged between all members at all times, things like missin
 * Ahmed: Transmission
 
 # TODO List
-* Add patient Zero to start of array list of individuals and make array list
-* Add colour switch for infected display
-* Add infected boolean state
+* Create Mortality Rate(Human) = Lethality rate(disease) * Health
+* Remove R0 and replace with infectionChance
+* Make ageGroup an interface and draw different shapes based on ageGroup
+
+## Future Plans
+* transmission chance based on health and infection chance
+* recovery time based on health
