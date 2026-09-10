@@ -31,7 +31,7 @@ public class DirectTransmission implements TransmissionStrategy {
 
     // Random number generator used to determine whether
     // the transmission attempt succeeds.
-    private final Random random = new Random();
+    //private final Random random = new Random();
 
     /**
      * Attempts to transmit a disease directly from the source
@@ -62,6 +62,7 @@ public class DirectTransmission implements TransmissionStrategy {
         if (source instanceof Human sourceHuman && target instanceof Human targetHuman
                 && !withinContactRadius(sourceHuman, targetHuman)) {
             return false;
+        }
         // The target should not already be infected.
         if (target.isInfected()) {
             return false;
@@ -105,6 +106,8 @@ public class DirectTransmission implements TransmissionStrategy {
         int columnDistance = Math.abs(source.loc.x - target.loc.x) / Cell.size;
         int rowDistance = Math.abs(source.loc.y - target.loc.y) / Cell.size;
         return Math.max(columnDistance, rowDistance) <= CONTACT_RADIUS;
+
+    }
     /**
      * Determines whether two humans are close enough for
      * direct transmission.
