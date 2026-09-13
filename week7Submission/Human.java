@@ -14,8 +14,9 @@ public class Human extends Actor{
     private double immunity;
     public boolean infected = false;
     private double health; // cannot go outside range 0.99-->0.5
-    private double mortality = 0.1; // placeholder for mortality rate
-
+    // private double mortality = 0.1; // placeholder for mortality rate, dunno if needed elsewhere besides infect method
+    private boolean contagious = false; // For incubationPeriod, since humans aernt contagious when the disease is still incubating
+    private int infectionCounter = 0; // To count it up to the set number, when it hits the number set contagious to true
     //rng modifier to add randomness to health calculation
     Random rand = new Random();
     double rng = 0.3 + rand.nextDouble(0.2);
@@ -154,11 +155,14 @@ public class Human extends Actor{
         if (this.infected){
             return;
         }
-        
-        double rng = Math.random();
-        if(rng < disease.getlethalityRate()){
+        // Currently the higher the health the higher the chance, so im assuming elderly and young people will have higher "health"
+        double mortalityRate = disease.getLethalityRate() * health(); 
+        double diceRoll = Math.random();
+        if(diceRoll < mortalityRate){
         this.infected = true;
         this.color = Color.RED;
+        this.contagious = false;
+        this.infectionCounter = 0;
         }
     }
 
@@ -166,6 +170,22 @@ public class Human extends Actor{
         return this.infected; //placeholder for infected status
     }
 
+    public void infectionChecker(Disease disease){
+        if(!this.infected) {
+            return;
+        }
 
+        this.infectionCounter++;
+        if(this.infectionCounter >= disease.getIncubationPeriod() && this.contagious == false){
+            this.contagious = true;
+        }
+        
+        else if(infectionCounter >= disease.getRecoveryPeriod() && this.contagious == true){
+            this.infected = false;
+            this.contagious = false;
+            this.color = Color.GREEN;
+            this.infectionCounter = 0;
+        }
+    }
 }
 

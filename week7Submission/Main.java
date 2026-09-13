@@ -36,7 +36,7 @@ public class Main extends JFrame {
             }
 
             updatePopulationCounts();
-            Disease disease = new Disease(1.0, 5, 14, 0.1, new DirectTransmission());
+            Disease disease = new Disease(0.2, 5, 14, 0.1, new DirectTransmission());
             Timer timer = new Timer(1000, event -> {
                 for (Human human : humans) {
                     human.move(grid, humans);
