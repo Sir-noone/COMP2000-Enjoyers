@@ -148,7 +148,7 @@ public class DirectTransmission implements TransmissionStrategy {
     private double calculateTransmissionProbability(Disease disease) {
 
         double baseProbability =
-                disease.getlethalityRate()
+                disease.getLethalityRate()
                 / ASSUMED_CONTACTS_PER_PERIOD;
 
         // Ensure the probability remains between 0.0 and 1.0.
