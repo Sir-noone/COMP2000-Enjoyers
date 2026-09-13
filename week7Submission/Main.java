@@ -31,17 +31,18 @@ public class Main extends JFrame {
             }
 
             Collections.shuffle(availableCells);
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1; i++) {
                 humans.add(new Human(availableCells.get(i), false));
             }
 
             updatePopulationCounts();
-            Disease disease = new Disease(1.0, 5, 14, 0.1, new DirectTransmission());
+            Disease disease = new Disease(5.0, 5, 14, new DirectTransmission());
             Timer timer = new Timer(1000, event -> {
                 for (Human human : humans) {
                     human.move(grid, humans);
                 }
                 for (Human human : humans) {
+                    human.infectionChecker(disease);
                     human.infectNearby(humans, disease);
                 }
                 updatePopulationCounts();

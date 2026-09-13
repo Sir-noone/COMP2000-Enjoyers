@@ -5,7 +5,7 @@ public class Disease{
     // private double mortalityRate;
     private TransmissionStrategy transmissionStrategy;
 
-    public Disease(double infectionRate, int incubationPeriod, int recoveryPeriod, double mortalityRate, TransmissionStrategy transmissionStrategy) {
+    public Disease(double infectionRate, int incubationPeriod, int recoveryPeriod, TransmissionStrategy transmissionStrategy) {
 
         this.infectionRate = infectionRate;
         this.incubationPeriod = incubationPeriod;
