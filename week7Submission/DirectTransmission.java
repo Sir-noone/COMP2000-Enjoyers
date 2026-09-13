@@ -19,15 +19,10 @@ public class DirectTransmission implements TransmissionStrategy {
     private static final int CONTACT_RADIUS = 1;
 
     /*
-     * Simplified project assumption used to convert R0 into
-     * an approximate probability for one contact.
+     * Simplified project assumption used to convert the disease's
+     * lethality rate into an approximate probability for one contact.
      *
-     * Example:
-     * R0 = 3.0
-     * 3.0 / 10.0 = 0.30
-     *
-     * This is a modelling assumption for our simulation,
-     * rather than a real epidemiological formula.
+     * This value is a modelling assumption for the simulation.
      */
     private static final double ASSUMED_CONTACTS_PER_PERIOD = 10.0;
 
@@ -81,11 +76,11 @@ public class DirectTransmission implements TransmissionStrategy {
         if (random.nextDouble() < probability) {
 
             /*
-             * Use the Human's infect() method instead of directly
-             * changing the infected field.
+             * Use Human's infect(Disease) method rather than directly
+             * modifying the infected field.
              *
-             * This preserves encapsulation by allowing Human
-             * to control its own infection state.
+             * This preserves encapsulation by allowing Human to
+             * control how its infection state changes.
              */
             target.infect(disease);
 
@@ -100,7 +95,7 @@ public class DirectTransmission implements TransmissionStrategy {
      * direct transmission.
      *
      * Human inherits its Cell location from Actor.
-     * Cell stores its grid position using x and y coordinates.
+     * Cell stores its position using x and y coordinates.
      *
      * @param source the source human
      * @param target the target human
@@ -141,12 +136,11 @@ public class DirectTransmission implements TransmissionStrategy {
     }
 
     /**
-     * Converts the disease's R0 into a simplified probability
-     * of transmission for one contact.
+     * Converts the disease's current lethality-rate value into
+     * a simplified probability for one contact.
      *
-     * R0 is not itself a probability, so it is divided by the
-     * assumed number of contact opportunities during the
-     * infectious period.
+     * The current Disease class exposes getlethalityRate(), so
+     * this method uses that existing project API.
      *
      * @param disease the disease being transmitted
      * @return a probability between 0.0 and 1.0
@@ -154,7 +148,8 @@ public class DirectTransmission implements TransmissionStrategy {
     private double calculateTransmissionProbability(Disease disease) {
 
         double baseProbability =
-                disease.getlethalityRate() / ASSUMED_CONTACTS_PER_PERIOD;
+                disease.getlethalityRate()
+                / ASSUMED_CONTACTS_PER_PERIOD;
 
         // Ensure the probability remains between 0.0 and 1.0.
         return Math.max(0.0, Math.min(1.0, baseProbability));
