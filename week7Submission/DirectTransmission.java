@@ -18,15 +18,8 @@ public class DirectTransmission implements TransmissionStrategy {
     // for direct transmission.
     private static final int CONTACT_RADIUS = 1;
 
-    /*
-     * Simplified project assumption used to convert the disease's
-     * lethality rate into an approximate probability for one contact.
-     *
-     * This value is a modelling assumption for the simulation.
-     */
-
     // Random number generator used to determine whether
-    // the transmission attempt succeeds.
+    // a transmission attempt succeeds.
     private final Random random = new Random();
 
     /**
@@ -41,7 +34,11 @@ public class DirectTransmission implements TransmissionStrategy {
     @Override
     public boolean transmit(Human source, Human target, Disease disease) {
 
-        // Prevent invalid objects from being processed.
+        /**
+         * Validate the arguments before attempting transmission.
+         * An invalid argument indicates incorrect use of the method,
+         * so an IllegalArgumentException is thrown.
+         */
         if (source == null || target == null || disease == null) {
             throw new IllegalArgumentException(
                     "Source, target, and disease cannot be null."
@@ -63,14 +60,17 @@ public class DirectTransmission implements TransmissionStrategy {
             return false;
         }
 
-        // Calculate the simplified transmission probability.
+        /**
+         * Calculate the probability of transmission using the
+         * disease's infection rate and the target's health.
+         */
         double probability = calculateTransmissionProbability(disease);
 
         /*
          * Generate a random value between 0.0 and 1.0.
          *
-         * If the random value is below the calculated probability,
-         * transmission succeeds.
+         * Transmission succeeds when the random value is lower
+         * than the calculated probability.
          */
         if (Math.random() < (disease.getInfectionRate() * target.health())) {
             /*
@@ -123,10 +123,9 @@ public class DirectTransmission implements TransmissionStrategy {
         int rowDistance =
                 Math.abs(sourceCell.y - targetCell.y) / Cell.size;
 
-        /*
-         * Use Manhattan distance:
-         *
-         * distance = horizontal distance + vertical distance
+        /**
+         * Within CONTACT_RADIUS = 1, the source can transmit to
+         * a human in the same cell or one directly adjacent cell.
          */
         int distance = columnDistance + rowDistance;
 
@@ -134,11 +133,12 @@ public class DirectTransmission implements TransmissionStrategy {
     }
 
     /**
-     * Converts the disease's current lethality-rate value into
-     * a simplified probability for one contact.
-     *
-     * The current Disease class exposes getlethalityRate(), so
-     * this method uses that existing project API.
+     * Calculates the simplified probability of transmission.
+     * 
+     * The current project model uses the disease's infection rate
+     * and the target Human's health to determine the probability.
+     * The result is constrained to the valid proability range
+     * from 0.0 to 1.0.
      *
      * @param disease the disease being transmitted
      * @return a probability between 0.0 and 1.0
