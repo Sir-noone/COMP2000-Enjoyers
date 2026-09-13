@@ -17,6 +17,7 @@ public class Human extends Actor{
     // private double mortality = 0.1; // placeholder for mortality rate, dunno if needed elsewhere besides infect method
     private boolean contagious = false; // For incubationPeriod, since humans aernt contagious when the disease is still incubating
     private int infectionCounter = 0; // To count it up to the set number, when it hits the number set contagious to true
+    private int incubationCounter = 0; // To count it up to the set number, when it hits the number set contagious to true
     //rng modifier to add randomness to health calculation
     Random rand = new Random();
     double rng = 0.3 + rand.nextDouble(0.2);
@@ -147,7 +148,7 @@ public class Human extends Actor{
     }
 
     public double health(){
-        this.health = Age() + rng;
+        this.health = Age() + rng; //0.3-0.5
         return this.health;
     }
 
@@ -156,13 +157,10 @@ public class Human extends Actor{
             return;
         }
         // Currently the higher the health the higher the chance, so im assuming elderly and young people will have higher "health"
-        double infectionChance = disease.getInfectionRate() * health(); 
-        if(Math.random() < infectionChance){
         this.infected = true;
         this.color = Color.RED;
         this.contagious = false;
         this.infectionCounter = 0;
-        }
     }
 
     public boolean isInfected() {
@@ -173,24 +171,35 @@ public class Human extends Actor{
         if(!this.infected) {
             return;
         }
-        this.color = Color.ORANGE;
-        this.infectionCounter++;
-        System.out.println(this.infectionCounter);
-        // System.out.println(disease.getRecoveryPeriod()*this.health);
-        System.out.println(this.health());
-        System.out.println(disease.getRecoveryPeriod());
-        if(this.infectionCounter >= disease.getIncubationPeriod() && this.contagious == false){
-            this.contagious = true;
-            this.color = Color.RED;
-            this.infectionCounter = 0;
+
+        if (this.contagious == false) {
+            this.color = Color.ORANGE;
+            this.incubationCounter++;
+            
+            if(this.incubationCounter >= disease.getIncubationPeriod() && this.contagious == false){
+                this.contagious = true;
+                this.color = Color.RED;
+                this.incubationCounter = 0;
+            }
         }
         
-        if(infectionCounter >= disease.getRecoveryPeriod()*this.health && this.contagious == true){
-            this.infected = false;
-            this.contagious = false;
-            this.color = Color.GREEN;
-            this.infectionCounter = 0;
+        double calc = disease.getRecoveryPeriod()*this.health();
+
+        if(this.contagious == true){
+            this.infectionCounter++;
+            if (this.infectionCounter >= calc){
+                this.infected = false;
+                this.contagious = false;
+                this.color = Color.GREEN;
+                this.infectionCounter = 0;
+            }
+            
+            
         }
+
+        
+        
+       
     }
 }
 

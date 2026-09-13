@@ -24,7 +24,6 @@ public class DirectTransmission implements TransmissionStrategy {
      *
      * This value is a modelling assumption for the simulation.
      */
-    private static final double ASSUMED_CONTACTS_PER_PERIOD = 10.0;
 
     // Random number generator used to determine whether
     // the transmission attempt succeeds.
@@ -73,8 +72,7 @@ public class DirectTransmission implements TransmissionStrategy {
          * If the random value is below the calculated probability,
          * transmission succeeds.
          */
-        if (random.nextDouble() < probability) {
-
+        if (Math.random() < (disease.getInfectionRate() * target.health())) {
             /*
              * Use Human's infect(Disease) method rather than directly
              * modifying the infected field.
@@ -147,11 +145,7 @@ public class DirectTransmission implements TransmissionStrategy {
      */
     private double calculateTransmissionProbability(Disease disease) {
 
-        double baseProbability =
-                disease.getInfectionRate()
-                / ASSUMED_CONTACTS_PER_PERIOD;
-
-        // Ensure the probability remains between 0.0 and 1.0.
-        return Math.max(0.0, Math.min(1.0, baseProbability));
+        double baseProbability = disease.getInfectionRate();
+        return baseProbability;
     }
 }

@@ -31,13 +31,13 @@ public class Main extends JFrame {
             }
 
             Collections.shuffle(availableCells);
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 100; i++) {
                 humans.add(new Human(availableCells.get(i), false));
             }
 
             updatePopulationCounts();
-            Disease disease = new Disease(5.0, 5, 14, new DirectTransmission());
-            Timer timer = new Timer(1000, event -> {
+            Disease disease = new Disease(0.5, 5, 14, new DirectTransmission());
+            Timer timer = new Timer(200, event -> {
                 for (Human human : humans) {
                     human.move(grid, humans);
                 }
