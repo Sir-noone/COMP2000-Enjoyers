@@ -156,9 +156,9 @@ public class Human extends Actor{
             return;
         }
         // Currently the higher the health the higher the chance, so im assuming elderly and young people will have higher "health"
-        double mortalityRate = disease.getLethalityRate() * health(); 
+        double infectionChance = disease.getInfectionRate() * health(); 
         double diceRoll = Math.random();
-        if(diceRoll < mortalityRate){
+        if(diceRoll < infectionChance){
         this.infected = true;
         this.color = Color.RED;
         this.contagious = false;
@@ -179,7 +179,7 @@ public class Human extends Actor{
         if(this.infectionCounter >= disease.getIncubationPeriod() && this.contagious == false){
             this.contagious = true;
         }
-        
+
         else if(infectionCounter >= disease.getRecoveryPeriod() && this.contagious == true){
             this.infected = false;
             this.contagious = false;
