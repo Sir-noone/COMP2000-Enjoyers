@@ -150,13 +150,16 @@ public class Human extends Actor{
         return this.health;
     }
 
-    public void infect(){ 
+    public void infect(Disease disease){ 
         if (this.infected){
             return;
         }
-
+        
+        double rng = Math.random();
+        if(rng < disease.getlethalityRate()){
         this.infected = true;
         this.color = Color.RED;
+        }
     }
 
     public boolean isInfected() {

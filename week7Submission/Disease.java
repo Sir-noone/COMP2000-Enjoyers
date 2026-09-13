@@ -1,13 +1,13 @@
 public class Disease{
-    private double r0;
+    private double lethalityRate;
     int incubationPeriod;
     int recoveryPeriod;
     private double mortalityRate;
     private TransmissionStrategy transmissionStrategy;
 
-    public Disease(double r0, int incubationPeriod, int recoveryPeriod, double mortalityRate, TransmissionStrategy transmissionStrategy) {
+    public Disease(double lethalityRate, int incubationPeriod, int recoveryPeriod, double mortalityRate, TransmissionStrategy transmissionStrategy) {
 
-        this.r0 = r0;
+        this.lethalityRate = lethalityRate;
         this.incubationPeriod = incubationPeriod;
         this.recoveryPeriod = recoveryPeriod;
         this.mortalityRate = mortalityRate;
@@ -23,8 +23,8 @@ public class Disease{
     //     // Disease will need to have access to the grid array index to infect but there is already an infect function in Human.java
     // }
 
-    public double getR0() { // Returns the value of r0
-        return r0;
+    public double getlethalityRate() { // Returns the value of lethalityRate
+        return lethalityRate;
     } 
     public double getMortalityRate() { // Returns the value of mortalityRate
         return mortalityRate;

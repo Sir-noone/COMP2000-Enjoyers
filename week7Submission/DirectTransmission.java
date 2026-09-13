@@ -87,7 +87,7 @@ public class DirectTransmission implements TransmissionStrategy {
              * This preserves encapsulation by allowing Human
              * to control its own infection state.
              */
-            target.infect();
+            target.infect(disease);
 
             return true;
         }
@@ -154,7 +154,7 @@ public class DirectTransmission implements TransmissionStrategy {
     private double calculateTransmissionProbability(Disease disease) {
 
         double baseProbability =
-                disease.getR0() / ASSUMED_CONTACTS_PER_PERIOD;
+                disease.getlethalityRate() / ASSUMED_CONTACTS_PER_PERIOD;
 
         // Ensure the probability remains between 0.0 and 1.0.
         return Math.max(0.0, Math.min(1.0, baseProbability));
