@@ -16,6 +16,7 @@ public class Main extends JFrame {
         List<Human> humans = new ArrayList<>();
         int infected = 0;
         int healthy = 0;
+        int daysPassed = 0;
 
         public Canvas() {
             setPreferredSize(new Dimension(
@@ -54,7 +55,7 @@ public class Main extends JFrame {
         private void updatePopulationCounts() {
             infected = 0;
             healthy = 0;
-
+            daysPassed++;
             for (Human human : humans) {
                 if (human.isInfected()) {
                     infected++;
@@ -64,16 +65,79 @@ public class Main extends JFrame {
             }
 
             population.setText("<html>Infected: " + infected
-                    + "<br>Not infected: " + healthy + "</html>");
+                    + "<br>Not infected: " + healthy + 
+                    "<br>Days passed: " + daysPassed + "</html>");
         }
 
 
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            grid.paint(g, getMousePosition());
+            grid.paint(g);
             for (Human human : humans) {
                 human.paint(g);
+                if (human.prevLoc != null) {
+                    g.setColor(Color.GRAY);
+                    g.drawLine(human.prevLoc.x + Cell.size / 2, human.prevLoc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    
+                    if ((human.prevLoc.x < human.loc.x) && (human.prevLoc.y == human.loc.y)) { //right
+                        g.drawLine(human.loc.x + Cell.size / 4, human.loc.y + Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size/ 4, human.loc.y + Cell.size - Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    }
+
+                    if ((human.prevLoc.x == human.loc.x) && (human.prevLoc.y < human.loc.y)) { // down
+                        g.drawLine(human.loc.x + Cell.size / 4, human.loc.y + Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    }
+
+                    if ((human.prevLoc.x > human.loc.x) && (human.prevLoc.y == human.loc.y)) { // left
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size - Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    }
+
+                    if ((human.prevLoc.x == human.loc.x) && (human.prevLoc.y > human.loc.y)) { // up
+                        g.drawLine(human.loc.x + Cell.size / 4, human.loc.y + Cell.size - Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size - Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    }
+                    
+                    if ((human.prevLoc.x < human.loc.x) && (human.prevLoc.y > human.loc.y)){// diagonal right up
+                        g.drawLine(human.loc.x + Cell.size / 4, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2 + Cell.size / 4);
+                    }
+                    
+                    if ((human.prevLoc.x > human.loc.x) && (human.prevLoc.y < human.loc.y)){// diagonal left down
+                        g.drawLine(human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2 - Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                    }
+
+                    if ((human.prevLoc.x < human.loc.x) && (human.prevLoc.y < human.loc.y)){// diagonal right down
+                        g.drawLine(human.loc.x + Cell.size / 4, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2 - Cell.size / 4);
+                    }
+
+                    if ((human.prevLoc.x > human.loc.x) && (human.prevLoc.y > human.loc.y)){// diagonal left up
+                        g.drawLine(human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2 + Cell.size / 4,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2);
+                        g.drawLine(human.loc.x + Cell.size - Cell.size / 4, human.loc.y + Cell.size / 2,
+                        human.loc.x + Cell.size / 2, human.loc.y + Cell.size / 2); 
+                    }
+                }
+                
             }
         }
     }

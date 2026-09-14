@@ -1,5 +1,5 @@
 import java.awt.Graphics;
-import java.awt.Point;
+
 
 public class Grid {
     //fields
@@ -17,10 +17,10 @@ public class Grid {
     }
 
     //methods
-    public void paint(Graphics g, Point mousePos) {
+    public void paint(Graphics g) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                cells[i][j].paint(g, mousePos);
+                cells[i][j].paint(g);
             }
         }
     }    

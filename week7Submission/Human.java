@@ -25,6 +25,7 @@ public class Human extends Actor{
     int randomAge = rand.nextInt(4); // generates a random number between 0 and 3 to detemine AgeGroup
     int randomNum = rand.nextInt(2); // generates a random number between 0 and 1 to determine randomly whether humann
                                            // is infected or not at the start of the simulation
+    Cell prevLoc; //previous Cell location
 
     public Human(Cell inLoc, boolean isBot) {
 
@@ -131,6 +132,7 @@ public class Human extends Actor{
 
         // Choose one of the available cells at random, if any exist
         if (!possibleCells.isEmpty()) {
+            prevLoc = this.loc;
             setLocation(possibleCells.get(rand.nextInt(possibleCells.size())));
         }
     }
