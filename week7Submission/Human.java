@@ -27,7 +27,7 @@ public class Human extends Actor{
                                            // is infected or not at the start of the simulation
     Cell prevLoc; //previous Cell location
 
-    public Human(Cell inLoc, boolean isBot) {
+    public Human(Cell inLoc) {
 
         super(inLoc, Color.GREEN);
 

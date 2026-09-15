@@ -35,7 +35,7 @@ public class Main extends JFrame {
 
             Collections.shuffle(availableCells);
             for (int i = 0; i < 100; i++) {
-                humans.add(new Human(availableCells.get(i), false));
+                humans.add(new Human(availableCells.get(i)));
             }
 
             updatePopulationCounts();
