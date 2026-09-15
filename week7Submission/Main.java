@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class Main extends JFrame {
     private final JLabel population = new JLabel();
+    private final DefaultListModel<Human> humanListModel = new DefaultListModel<>();
+    private final JList<Human> humanList = new JList<>(humanListModel);
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
@@ -67,8 +69,13 @@ public class Main extends JFrame {
             population.setText("<html>Infected: " + infected
                     + "<br>Not infected: " + healthy + 
                     "<br>Days passed: " + daysPassed + "</html>");
-        }
 
+                humanListModel.clear();
+                for (int index = 0; index < humans.size(); index++) {
+                Human human = humans.get(index);
+                humanListModel.addElement(human);
+                }
+        }
 
         @Override
         public void paint(Graphics g) {
@@ -150,9 +157,54 @@ public class Main extends JFrame {
             this.add(canvas, BorderLayout.CENTER);
             JPanel sidePanel = new JPanel(new BorderLayout());
             sidePanel.add(population, BorderLayout.NORTH);
+            humanList.setCellRenderer(new HumanListCellRenderer());
+            humanList.setVisibleRowCount(20);
+            sidePanel.add(new JScrollPane(humanList), BorderLayout.CENTER);
             this.add(sidePanel, BorderLayout.EAST);
             this.pack();
             this.setVisible(true);
         }  
+
+    private static class HumanListCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
+            Human human = (Human) value;
+            String status = human.isInfected() ? "Infected" : "Healthy";
+            JLabel label = (JLabel) super.getListCellRendererComponent(list,
+                    "Human " + (index + 1) + " - " + human.getAgeGroup()
+                            + " - " + status,
+                    index, isSelected, cellHasFocus);
+            label.setIcon(new ColourIcon(human.color));
+            label.setIconTextGap(8);
+            return label;
+        }
+    }
+
+    private static class ColourIcon implements Icon {
+        private final Color colour;
+
+        ColourIcon(Color colour) {
+            this.colour = colour;
+        }
+
+        @Override
+        public void paintIcon(Component component, Graphics graphics, int x, int y) {
+            graphics.setColor(colour);
+            graphics.fillRect(x, y, getIconWidth(), getIconHeight());
+            graphics.setColor(Color.DARK_GRAY);
+            graphics.drawRect(x, y, getIconWidth() - 1, getIconHeight() - 1);
+        }
+
+        @Override
+        public int getIconWidth() {
+            return 14;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 14;
+        }
+    }
 
 }
