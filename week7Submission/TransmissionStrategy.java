@@ -4,6 +4,8 @@
  * Different tranmission types can implement this interface using different rules
  * for determining whether a disease is successfully tranmitted from one human to another.
  */
+
+@FunctionalInterface
 public interface TransmissionStrategy {
 
 /**
