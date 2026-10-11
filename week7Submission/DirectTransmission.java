@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.function.ToDoubleBiFunction;
 
 /**
  * Implements direct-contact disease transmission.
@@ -23,6 +24,18 @@ public class DirectTransmission implements TransmissionStrategy {
     private final Random random = new Random();
 
     /**
+     * Lambda expression used to calculate the transmission
+     * probability for a particular disease and target Human.
+     * 
+     * ToDoubleBiFunction takes two inputs and returns a double.
+     * Here, the inputs are Disease and target Human,
+     * and the result is the probability of transmission.
+     */
+    private final ToDoubleBiFunction<Disease, Human> probabilityCalculator = 
+        (disease, target) ->
+            disease.getInfectionRate() * target.health();
+
+    /**
      * Attempts to transmit a disease directly from the source
      * human to the target human.
      *
@@ -36,6 +49,7 @@ public class DirectTransmission implements TransmissionStrategy {
 
         /**
          * Validate the arguments before attempting transmission.
+         * 
          * An invalid argument indicates incorrect use of the method,
          * so an IllegalArgumentException is thrown.
          */
@@ -64,7 +78,8 @@ public class DirectTransmission implements TransmissionStrategy {
          * Calculate the probability of transmission using the
          * disease's infection rate and the target's health.
          */
-        double probability = calculateTransmissionProbability(disease);
+        double probability =
+            calculateTransmissionProbability(disease, target);
 
         /*
          * Generate a random value between 0.0 and 1.0.
@@ -72,13 +87,14 @@ public class DirectTransmission implements TransmissionStrategy {
          * Transmission succeeds when the random value is lower
          * than the calculated probability.
          */
-        if (Math.random() < (disease.getInfectionRate() * target.health())) {
+        if (random.nextDouble() < probability) {
+
             /*
-             * Use Human's infect(Disease) method rather than directly
-             * modifying the infected field.
+             * Use Human's infect(Disease) method rather than
+             * directly modifying the infected field.
              *
              * This preserves encapsulation by allowing Human to
-             * control how its infection state changes.
+             * control how its infection state.
              */
             target.infect(disease);
 
@@ -135,17 +151,22 @@ public class DirectTransmission implements TransmissionStrategy {
     /**
      * Calculates the simplified probability of transmission.
      * 
-     * The current project model uses the disease's infection rate
-     * and the target Human's health to determine the probability.
-     * The result is constrained to the valid proability range
-     * from 0.0 to 1.0.
+     * The probability calculation is provided by a lambda expression
+     * stored in probabilityCalculator. This separates the probability
+     * rule from the main tranmission process.
      *
      * @param disease the disease being transmitted
+     * @param target the target human
      * @return a probability between 0.0 and 1.0
      */
-    private double calculateTransmissionProbability(Disease disease) {
+    private double calculateTransmissionProbability(
+        Disease disease, Human target) {
 
-        double baseProbability = disease.getInfectionRate();
-        return baseProbability;
+        double probability = 
+            probabilityCalculator.applyAsDouble(disease, target);
+
+        // Ensure the probability is remains within the valid
+        // probability range of 0.0 to 1.0.
+        return Math.max(0.0, Math.min(1.0, probability));
     }
 }
