@@ -63,6 +63,17 @@ public class Main extends JFrame {
             healthy = humans.size() - infected;
             daysPassed++;
 
+            /* infected = 0;
+            healthy = 0;
+            daysPassed++;
+            for (Human human : humans) {
+                if (human.isInfected()) {
+                    infected++;
+                } else {
+                    healthy++;
+                }
+            } */
+
             population.setText("<html>Infected: " + infected
                     + "<br>Not infected: " + healthy
                     + "<br>Days passed: " + daysPassed + "</html>");
