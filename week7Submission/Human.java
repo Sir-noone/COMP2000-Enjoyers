@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Add patient Zero to start of array list of individuals
+public class Human extends Actor {
 
-public class Human extends Actor{
     private AgeGroup age;
     //private double age = 0.1; // placeholder for age group, will be set by the simulation
     private double immunity;
@@ -24,7 +24,7 @@ public class Human extends Actor{
 
     int randomAge = rand.nextInt(4); // generates a random number between 0 and 3 to detemine AgeGroup
     int randomNum = rand.nextInt(2); // generates a random number between 0 and 1 to determine randomly whether humann
-                                           // is infected or not at the start of the simulation
+    // is infected or not at the start of the simulation
     Cell prevLoc; //previous Cell location
 
     public Human(Cell inLoc) {
@@ -37,8 +37,10 @@ public class Human extends Actor{
             this.infected = false;
         }
 
-        if (infected) {this.color = Color.RED;}
-        
+        if (infected) {
+            this.color = Color.RED;
+        }
+
         if (randomAge == 0) {
             this.age = AgeGroup.CHILD;
         } else if (randomAge == 1) {
@@ -49,7 +51,6 @@ public class Human extends Actor{
             this.age = AgeGroup.ELDERLY;
         }
 
-        
     }
 
     protected void setPoly() {
@@ -61,9 +62,8 @@ public class Human extends Actor{
         face.addPoint(loc.x + 3, loc.y + 10);
         display.add(face);
 
-  }
+    }
 
-    
     public double Age() {
         return this.age.getAgeValue();
     }
@@ -116,13 +116,16 @@ public class Human extends Actor{
                 }
 
                 Cell candidate = grid.cells[row][col];
+                boolean occupied = humans.stream()
+                        .anyMatch(human -> human != this && human.loc == candidate);
+                /*
                 boolean occupied = false;
                 for (Human human : humans) {
                     if (human != this && human.loc == candidate) {
                         occupied = true;
                         break;
                     }
-                }
+                }*/
 
                 if (!occupied) {
                     possibleCells.add(candidate);
@@ -149,13 +152,13 @@ public class Human extends Actor{
         }
     }
 
-    public double health(){
+    public double health() {
         this.health = Age() + rng; //0.3-0.5
         return this.health;
     }
 
-    public void infect(Disease disease){ 
-        if (this.infected){
+    public void infect(Disease disease) {
+        if (this.infected) {
             return;
         }
         // Currently the higher the health the higher the chance, so im assuming elderly and young people will have higher "health"
@@ -169,39 +172,34 @@ public class Human extends Actor{
         return this.infected; //placeholder for infected status
     }
 
-    public void infectionChecker(Disease disease){
-        if(!this.infected) {
+    public void infectionChecker(Disease disease) {
+        if (!this.infected) {
             return;
         }
 
         if (this.contagious == false) {
             this.color = Color.ORANGE;
             this.incubationCounter++;
-            
-            if(this.incubationCounter >= disease.getIncubationPeriod() && this.contagious == false){
+
+            if (this.incubationCounter >= disease.getIncubationPeriod() && this.contagious == false) {
                 this.contagious = true;
                 this.color = Color.RED;
                 this.incubationCounter = 0;
             }
         }
-        
-        double calc = disease.getRecoveryPeriod()*this.health();
 
-        if(this.contagious == true){
+        double calc = disease.getRecoveryPeriod() * this.health();
+
+        if (this.contagious == true) {
             this.infectionCounter++;
-            if (this.infectionCounter >= calc){
+            if (this.infectionCounter >= calc) {
                 this.infected = false;
                 this.contagious = false;
                 this.color = Color.GREEN;
                 this.infectionCounter = 0;
             }
-            
-            
+
         }
 
-        
-        
-       
     }
 }
-
