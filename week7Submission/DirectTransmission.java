@@ -142,8 +142,12 @@ public class DirectTransmission implements TransmissionStrategy {
         /**
          * Within CONTACT_RADIUS = 1, the source can transmit to
          * a human in the same cell or one directly adjacent cell.
+         * This section is now updates to use Java Streams to calculate the total distance.
+         * This replaces the traditional approach of simply defining a variable.
          */
-        int distance = columnDistance + rowDistance;
+        int distance = java.util.stream.IntStream
+        .of(columnDistance, rowDistance)
+        .sum();
 
         return distance <= CONTACT_RADIUS;
     }
