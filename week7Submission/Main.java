@@ -59,6 +59,12 @@ public class Main extends JFrame {
         public void updatePopulationCounts() {
                 daysPassed++;
                 Map<Boolean, Long> infected = humans.stream().collect(Collectors.groupingBy(human->human.isInfected(),Collectors.counting()));
+                Map<AgeGroup, Long> infectedByAgeGroup = humans.parallelStream().filter(Human::isInfected)
+                .collect(Collectors.groupingBy(Human::getAgeGroup,Collectors.counting()));
+                long infectedChildren = infectedByAgeGroup.getOrDefault(AgeGroup.CHILD, 0L);
+                long infectedYouth = infectedByAgeGroup.getOrDefault(AgeGroup.YOUTH, 0L);
+                long infectedAdults = infectedByAgeGroup.getOrDefault(AgeGroup.ADULT, 0L);
+                long infectedElderly = infectedByAgeGroup.getOrDefault(AgeGroup.ELDERLY, 0L);
                 // healthy = 0;
                 // for (Human human : humans) {
                 //     if (human.isInfected()) {
@@ -68,9 +74,15 @@ public class Main extends JFrame {
                 //     }
                 // }
 
-            population.setText("<html>Infected: " + infected.get(true)
-                    + "<br>Not infected: " + infected.get(false) + 
-                    "<br>Days passed: " + daysPassed + "</html>");
+           population.setText("<html><div style='font-size:8px;'>"
+        + "Infected: " + infected.get(true)
+        + "<br>Not infected: " + infected.get(false)
+        + "<br>Infected Children: " + infectedChildren 
+        + "<br>Infected Youth: " + infectedYouth 
+        + "<br>Infected Adults: " + infectedAdults 
+        + "<br>Infected Elderly: " + infectedElderly 
+        + "<br>Days passed: " + daysPassed
+        + "</div></html>");
 
                 humanListModel.clear();
                 for (int index = 0; index < humans.size(); index++) {
